@@ -5,29 +5,93 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <style>
+        .fake-btn{
+            border: 1px black solid;
+            border-radius: 5px;
+            width: 300px;
+            text-align: center;
+            font-size: 25px;
+        }
+        #dropContainer{
+            height: 60%;
+            width: 60%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 30px;
+
+        }
+
+        #dropContainer > div{
+            font-size: 40px;
+            color: grey;
+            margin: 15px 0;
+        }
+
+        form{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .pop{
+            display: block;
+        }
+    </style>
 </head>
 <body>
-    
+    <form action="/dnd" id='dnd' method='post' enctype="multipart/form-data" style="height: 100vh; position: relative;">
 
+            <div id="dropContainer"  style="border:5px dashed gray;">
+                <div class='title'>
+                    Drag image and drop Here
+                </div>
+                <div class='title'> or </div>
+                <label for="fileInput">
+
+                    <div class='fake-btn'> select an image</div>
+
+                </label>
+                <input type="file" style="display: none;" id="fileInput" name="def" accept="image/png, image/gif, image/jpeg,'image/jpg'" />
+                {% if res is defined %}
+                    <div class='pop'>
+
+                    </div>
+                {% endif %}
+             </div>
+
+    </form>
 
 
     <script>
         dropContainer.ondragover = dropContainer.ondragenter = function(evt) {
-  evt.preventDefault();
-};
+          evt.preventDefault();
+        };
 
-dropContainer.ondrop = function(evt) {
-  // pretty simple -- but not for IE :(
-  fileInput.files = evt.dataTransfer.files;
+        dropContainer.ondrop = function(evt) {
 
-  // If you want to use some of the dropped files
-  const dT = new DataTransfer();
-  dT.items.add(evt.dataTransfer.files[0]);
-  dT.items.add(evt.dataTransfer.files[3]);
-  fileInput.files = dT.files;
+            fileInput.files = evt.dataTransfer.files;
 
-  evt.preventDefault();
-};
+            const dT = new DataTransfer();
+            dT.items.add(evt.dataTransfer.files[0]);
+            dT.items.add(evt.dataTransfer.files[3]);
+            fileInput.files = dT.files;
+
+            evt.preventDefault();
+        };
     </script>
+
+    <script>
+        $('#fileInput').on('change',function(){
+            $('#dnd').submit();
+        })
+
+    </script>
+
 </body>
 </html>
