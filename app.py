@@ -23,11 +23,11 @@ def checkValidationFile(filename):
     filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@app.route('/dnd',methods=['POST','GET'])
+@app.route('/',methods=['POST','GET'])
 def dnd():
     print(f"{request.method=}")
     if request.method =="GET":
-        return render_template('dnd.html')
+        return render_template('index.html')
 
     imgf = request.files.get('def','')
     file_name = imgf.filename
@@ -35,26 +35,10 @@ def dnd():
     if file_name is not '' and checkValidationFile(file_name):
         print(f'{imgf=}')
         print(os.path.join(app.config['UPLOAD_FOLDER'], file_name))
-        imgf.save(os.path.join(app.config['UPLOAD_FOLDER'], file_name))
+        imgf.save(os.path.join(app.config['UPLOAD_FOLDER'], file_name)) 
 
     res = callPredict(file_name)
-    return render_template('dnd.html',res = res)
-
-
-@app.route('/',methods=['POST','GET'])
-def main():
-
-    img = 'no img'
-    print(f"{request.method=}")
-    if request.method =="POST":
-        imgf = request.files.get('def','')
-        img = ' img found'
-        print(f'{imgf=}')
-
-        res = callPredict(imgf)
-        return render_template('index.html',img = img,res = res)
-
-    return render_template('index.html',img = img)
+    return render_template('index.html',res = res)
 
 if __name__ == '__main__':
     app.run()
