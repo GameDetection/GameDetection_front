@@ -15,7 +15,7 @@ def callPredict(file_name):
     file_location = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
 
 
-    return {'precision': '100%','resul':'MMO'}
+    return {'precision': '100%','resultat':'MMO'}
 
 
 def checkValidationFile(filename):
